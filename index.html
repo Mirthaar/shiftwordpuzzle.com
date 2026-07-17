@@ -1,123 +1,190 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shift - Daily Word Puzzle</title>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<html lang="en"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shift - Daily Word Puzzle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#14110D;--panel:#1A1611;--cell:#221D17;--primary:#EAE2D0;--dim:#8A8070;
+  --accent:#D4A24C;--border:rgba(234,226,208,0.10);--border-strong:rgba(234,226,208,0.16);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--primary);font-family:'Archivo',sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--accent)}
+a:hover{color:#e0b567}
+img{max-width:100%;display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
 
-    body {
-      background-color: #14110D;
-      color: #EAE2D0;
-      font-family: 'Archivo', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:20;background:rgba(20,17,13,0.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 24px}
+.wordmark{font-size:22px;font-weight:800;letter-spacing:-0.02em;color:var(--primary)}
+.wordmark .dot{color:var(--accent)}
+.header-cta{font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--dim);border:1px solid var(--border-strong);padding:9px 16px;border-radius:999px;white-space:nowrap}
 
-    header {
-      width: 100%;
-      max-width: 900px;
-      padding: 32px 24px;
-      display: flex;
-      justify-content: center;
-    }
+/* ---------- hero ---------- */
+.hero{position:relative;padding:88px 24px 40px;text-align:center;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:600px;background:radial-gradient(ellipse at center, rgba(212,162,76,0.16), transparent 65%);pointer-events:none}
+.hero-mark{font-size:clamp(48px,9vw,84px);font-weight:800;letter-spacing:-0.03em;color:var(--primary);position:relative;line-height:1}
+.hero-mark .dot{color:var(--accent)}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin:22px 0 18px;position:relative}
+.hero h1{font-size:clamp(28px,4.6vw,44px);font-weight:700;letter-spacing:-0.01em;line-height:1.15;max-width:640px;margin:0 auto 20px;position:relative}
+.hero h1 .accent{color:var(--accent)}
+.hero p.lede{font-size:clamp(16px,2vw,19px);color:var(--dim);max-width:520px;margin:0 auto 34px;line-height:1.55;position:relative}
 
-    .wordmark {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
+.store-btn{display:inline-flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--border-strong);color:var(--primary);font-size:15px;font-weight:600;letter-spacing:0.01em;padding:14px 26px;border-radius:10px;cursor:default;user-select:none;position:relative;transition:border-color .18s ease, background .18s ease}
+.store-btn:hover{border-color:rgba(212,162,76,0.45);background:#1d1811}
+.store-btn svg{width:20px;height:20px;flex-shrink:0}
+.store-btn .label{text-align:left;line-height:1.25}
+.store-btn .label .small{display:block;font-size:10.5px;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;font-weight:600}
+.store-btn .label .big{display:block;font-size:15.5px;font-weight:700}
 
-    .wordmark span { color: #D4A24C; }
+/* ---------- device frame ---------- */
+.phone-shell{position:relative;width:100%;border:1px solid rgba(234,226,208,0.14);border-radius:34px;overflow:hidden;box-shadow:0 24px 60px -20px rgba(0,0,0,0.55);flex-shrink:0;background:var(--bg)}
+.phone-shell img{width:100%;display:block;
+  -webkit-mask-image:linear-gradient(to bottom, black 82%, transparent 100%);mask-image:linear-gradient(to bottom, black 82%, transparent 100%)}
 
-    section.feature {
-      width: 100%;
-      max-width: 480px;
-      padding: 48px 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+/* ---------- hero phones row ---------- */
+.hero-phones{display:flex;justify-content:center;align-items:flex-start;gap:24px;margin-top:56px;position:relative}
+.hero-phones .phone-wrap{width:220px;flex-shrink:0}
 
-    section.feature img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 10px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
-    }
+/* ---------- reveal animation ---------- */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .5s ease, transform .5s ease}
+.reveal.is-visible{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){
+  .reveal{transform:none;transition:opacity .5s ease}
+}
 
-    .cta {
-      width: 100%;
-      max-width: 900px;
-      padding: 24px 24px 64px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
+/* ---------- features ---------- */
+.features{padding:60px 24px 40px}
+.feature{display:flex;align-items:center;gap:80px;padding:70px 0;border-top:1px solid var(--border)}
+.feature:first-child{border-top:none}
+.feature.reverse{flex-direction:row-reverse}
+.feature .media{flex:0 0 auto;width:240px;display:flex;justify-content:center}
+.feature .media .phone-shell{width:240px}
+.feature .copy{flex:1;min-width:0}
+.feature .eyebrow{margin-bottom:14px}
+.feature h2{font-size:clamp(26px,3.6vw,36px);font-weight:800;letter-spacing:-0.01em;line-height:1.15;margin-bottom:16px}
+.feature p{font-size:17px;color:var(--dim);line-height:1.65;max-width:420px}
 
-    .coming-soon {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: #1A1611;
-      border: 1px solid rgba(234, 226, 208, 0.14);
-      border-radius: 10px;
-      color: #8A8070;
-      font-family: 'Archivo', sans-serif;
-      font-size: 12px;
-      font-weight: 600;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0 24px;
-      height: 52px;
-      opacity: 0.85;
-    }
+/* ---------- final cta ---------- */
+.final-cta{padding:100px 24px 90px;text-align:center;position:relative}
+.final-cta::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center, rgba(212,162,76,0.10), transparent 60%);pointer-events:none}
+.final-icon{width:88px;height:88px;border-radius:22px;margin:0 auto 28px;position:relative;overflow:hidden;box-shadow:0 20px 50px -15px rgba(0,0,0,0.5)}
+.final-icon img{width:100%;height:100%;object-fit:cover}
+.final-cta h2{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-0.01em;margin-bottom:14px;position:relative}
+.final-cta p{color:var(--dim);font-size:16px;margin-bottom:32px;position:relative}
 
-    footer {
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      color: rgba(138, 128, 112, 0.6);
-      text-transform: uppercase;
-      padding: 24px 24px 60px;
-    }
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
+.footer-links{display:flex;justify-content:center;gap:24px;margin-bottom:14px;flex-wrap:wrap}
+.footer-links a{font-size:13px;color:var(--dim);text-decoration:none}
+.footer-links a:hover{color:var(--primary)}
+.footer-copy{font-size:12px;color:var(--dim);opacity:0.7}
 
-    footer a {
-      color: rgba(138, 128, 112, 0.6);
-      text-decoration: none;
-    }
-
-    footer a:hover { color: #8A8070; }
-  </style>
+@media (max-width:860px){
+  .feature, .feature.reverse{flex-direction:column;gap:36px;padding:50px 0;text-align:center}
+  .feature .copy p{margin:0 auto}
+  .feature .media .phone-shell{width:190px}
+  .hero-phones{gap:14px}
+  .hero-phones .phone-wrap{width:30vw}
+}
+@media (max-width:560px){
+  .hero{padding:64px 20px 24px}
+  .hero-phones{margin-top:44px}
+  .header-cta{display:none}
+  .store-btn{padding:12px 20px}
+}
+</style>
 </head>
+
 <body>
 
-  <header>
-    <div class="wordmark">shift<span>.</span></div>
-  </header>
-
-  <section class="feature">
-    <img src="images/01-board.png" alt="Shift: Travel from word to word. Change one letter at a time to reach the target word." />
-  </section>
-
-  <section class="feature">
-    <img src="images/02-home.png" alt="Shift: A fresh puzzle every day. A brand-new word puzzle boards every single morning." />
-  </section>
-
-  <section class="feature">
-    <img src="images/03-win.png" alt="Shift: Every win earns you miles. Reach your destination and cash in on the reward." />
-  </section>
-
-  <div class="cta">
-    <div class="coming-soon">Coming soon to the Apple App Store</div>
+<header>
+  <div class="header-inner">
+    <div class="wordmark">shift<span class="dot">.</span></div>
+    <div class="header-cta">Coming Soon</div>
   </div>
+</header>
 
-  <footer>
-    <a href="/privacy-policy">Privacy Policy</a> &middot; <a href="/terms-of-service">Terms of Service</a>
-  </footer>
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-mark">shift<span class="dot">.</span></div>
+    <div class="eyebrow">Daily Word Puzzle</div>
+    <h1>Change one letter. Change your <span class="accent">destination</span>.</h1>
+    <p class="lede">Shift is a daily word puzzle. Travel from a departure word to your destination, one letter at a time.</p>
+    <div>
+      <div class="store-btn" aria-disabled="true">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12.3c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.7-1.8-3.3-1.8-1.4-.1-2.7.8-3.4.8-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.2 0 2-1.1 2.8-2.2.7-1 1-2 1-2.1-.1 0-2.4-.9-2.4-3.3zm-2.3-8.4c.6-.8 1-1.8.9-2.9-.9.1-2 .6-2.6 1.4-.6.7-1.1 1.8-1 2.8 1 .1 2.1-.5 2.7-1.3z"></path></svg>
+        <span class="label"><span class="small">Coming soon to the</span><span class="big">Apple App Store</span></span>
+      </div>
+    </div>
+    <div class="hero-phones">
+      <div class="phone-wrap"><div class="phone-shell"><img src="images/real-board.png" alt="Shift letter ladder board"></div></div>
+      <div class="phone-wrap"><div class="phone-shell"><img src="images/real-today.png" alt="Shift today's puzzle screen"></div></div>
+      <div class="phone-wrap"><div class="phone-shell"><img src="images/real-win.png" alt="Shift win screen with miles earned"></div></div>
+    </div>
+  </div>
+</section>
 
-</body>
-</html>
+<section class="features wrap">
+  <div class="feature reveal">
+    <div class="media"><div class="phone-shell"><img src="images/real-board.png" alt="Letter ladder board"></div></div>
+    <div class="copy">
+      <div class="eyebrow">The Journey</div>
+      <h2>Travel from word to word.</h2>
+      <p>Change one letter at a time to reach your destination. Every move counts toward your streak.</p>
+    </div>
+  </div>
+  <div class="feature reverse reveal">
+    <div class="media"><div class="phone-shell"><img src="images/real-today.png" alt="Today's puzzle screen"></div></div>
+    <div class="copy">
+      <div class="eyebrow">Every Morning</div>
+      <h2>A fresh puzzle, every day.</h2>
+      <p>A brand-new board departs each morning. Miss a day, and the journey moves on without you.</p>
+    </div>
+  </div>
+  <div class="feature reveal">
+    <div class="media"><div class="phone-shell"><img src="images/real-win.png" alt="Win screen with fare miles earned"></div></div>
+    <div class="copy">
+      <div class="eyebrow">The Reward</div>
+      <h2>Every win earns you miles.</h2>
+      <p>Arrive at your destination and cash in fare miles. Climb the ranks from Standby to First Class.</p>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta reveal">
+  <div class="wrap">
+    <div class="final-icon"><img src="images/app-icon-1024.png" alt="Shift app icon"></div>
+    <h2>Ready for takeoff.</h2>
+    <p>Shift is landing soon on the App Store.</p>
+    <div class="store-btn" aria-disabled="true" style="margin:0 auto">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12.3c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.7-1.8-3.3-1.8-1.4-.1-2.7.8-3.4.8-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.2 0 2-1.1 2.8-2.2.7-1 1-2 1-2.1-.1 0-2.4-.9-2.4-3.3zm-2.3-8.4c.6-.8 1-1.8.9-2.9-.9.1-2 .6-2.6 1.4-.6.7-1.1 1.8-1 2.8 1 .1 2.1-.5 2.7-1.3z"></path></svg>
+      <span class="label"><span class="small">Coming soon to the</span><span class="big">Apple App Store</span></span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-links">
+    <a href="/privacy-policy">Privacy Policy</a>
+    <a href="/terms-of-service">Terms of Service</a>
+  </div>
+  <div class="footer-copy">(c) 2026 Solari Games LLC. All rights reserved.</div>
+</footer>
+
+<script>
+const els = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+},{threshold:0.15});
+els.forEach(el=>io.observe(el));
+</script>
+
+
+</body></html>
