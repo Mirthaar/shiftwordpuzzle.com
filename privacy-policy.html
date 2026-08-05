@@ -103,7 +103,7 @@
     <li><strong>Game data</strong> - your puzzle results, guess history, streaks, and win/loss record. Stored on your device and, if signed in, synced to our cloud database (Firebase Firestore).</li>
     <li><strong>Analytics</strong> - usage data such as puzzles started, guesses submitted, and win/loss events, provided by Firebase Analytics. This is collected regardless of App Tracking Transparency status; ATT governs cross-app tracking and advertising identifiers, which Shift does not currently use.</li>
     <li><strong>Crash reports</strong> - if the app crashes, basic diagnostic information is automatically collected via Firebase Crashlytics to help us fix the issue.</li>
-    <li><strong>Purchase information</strong> - if you make a purchase, RevenueCat processes the transaction and receives your account identifier and purchase/subscription details, used to grant your purchased items. See Third-Party Services below.</li>
+    <li><strong>Purchase information</strong> - if you make a purchase, RevenueCat processes the transaction and receives your account identifier and purchase/subscription details, used to grant your purchased items. If you're signed in with an email and name, we also send those to RevenueCat so we can look up your purchase history if you need support. See Third-Party Services below.</li>
     <li><strong>Device information</strong> - basic info such as device type and iOS version, collected by Firebase.</li>
   </ul>
 
