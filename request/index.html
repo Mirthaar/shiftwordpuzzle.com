@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request a Word · Shift</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #14110D;
+    --panel: #1A1611;
+    --cell: #221D17;
+    --fg: #EAE2D0;
+    --dim: #8A8070;
+    --accent: #D4A24C;
+    --warning: #C8503C;
+    --border: rgba(234, 226, 208, 0.10);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Archivo', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 48px 20px;
+  }
+  .page { width: 100%; max-width: 480px; }
+  .kicker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+  .sub {
+    font-size: 14px;
+    color: var(--dim);
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+  label {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .field { margin-bottom: 20px; }
+  input, textarea {
+    width: 100%;
+    background: var(--cell);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    font-family: 'Archivo', sans-serif;
+    font-size: 15px;
+    padding: 13px 14px;
+    outline: none;
+  }
+  input:focus, textarea:focus { border-color: rgba(234, 226, 208, 0.28); }
+  #word {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  #word::placeholder { letter-spacing: 0.1em; }
+  textarea { resize: vertical; min-height: 84px; font-size: 14px; line-height: 1.5; }
+  .hint {
+    font-size: 12px;
+    color: var(--dim);
+    margin-top: 6px;
+  }
+  .status {
+    display: none;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 14px;
+    font-size: 13px;
+    line-height: 1.4;
+    border: 1px solid transparent;
+    margin-top: 10px;
+  }
+  .status.show { display: flex; }
+  .status .dot { width: 7px; height: 7px; flex-shrink: 0; }
+  .status.eligible { background: rgba(212, 162, 76, 0.10); border-color: rgba(212, 162, 76, 0.35); color: var(--accent); }
+  .status.eligible .dot { background: var(--accent); }
+  .status.dupe { background: rgba(212, 162, 76, 0.06); border-color: rgba(212, 162, 76, 0.20); color: var(--dim); }
+  .status.dupe .dot { background: var(--dim); }
+  .status.banned { background: rgba(200, 80, 60, 0.10); border-color: rgba(200, 80, 60, 0.35); color: var(--warning); }
+  .status.banned .dot { background: var(--warning); }
+  button {
+    width: 100%;
+    height: 54px;
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    font-family: 'Archivo', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  button:disabled { background: rgba(212, 162, 76, 0.25); color: rgba(20, 17, 13, 0.5); cursor: not-allowed; }
+  .spinner {
+    display: none;
+    width: 15px; height: 15px;
+    border: 2px solid rgba(20, 17, 13, 0.3);
+    border-top-color: var(--bg);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  button.loading .spinner { display: block; }
+  button.loading .btn-label { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .spinner { animation: none; opacity: 0.6; }
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .result {
+    display: none;
+    padding: 22px;
+    border: 1px solid var(--border);
+    background: var(--panel);
+    margin-top: 24px;
+  }
+  .result.show { display: block; }
+  .result h2 { font-size: 18px; margin-bottom: 8px; }
+  .result p { font-size: 13px; color: var(--dim); line-height: 1.6; }
+  .result.error h2 { color: var(--warning); }
+  .result a { color: var(--accent); }
+  .footnote {
+    font-size: 11.5px;
+    color: var(--dim);
+    line-height: 1.6;
+    margin-top: 28px;
+  }
+  .load-error {
+    display: none;
+    padding: 14px 16px;
+    background: rgba(200, 80, 60, 0.10);
+    border: 1px solid rgba(200, 80, 60, 0.35);
+    color: var(--warning);
+    font-size: 13px;
+    margin-bottom: 24px;
+  }
+  .load-error.show { display: block; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="kicker">SHIFT · WORD LIST</div>
+  <h1>Request a word</h1>
+  <p class="sub">Think a word belongs on Shift's official list? Send it our way. Requests are reviewed in batches, not instantly, so don't expect a same-day answer.</p>
+
+  <div class="load-error" id="loadError">Couldn't load the word list, so we can't check your word right now. Try again in a bit.</div>
+
+  <form id="requestForm">
+    <div class="field">
+      <label for="word">Word</label>
+      <input type="text" id="word" maxlength="4" placeholder="WORD" autocomplete="off" spellcheck="false">
+      <div class="status" id="wordStatus">
+        <div class="dot"></div>
+        <span id="wordStatusText"></span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="reason">Why does it belong?</label>
+      <textarea id="reason" placeholder="Tell us why this word should be on the list."></textarea>
+    </div>
+
+    <div class="field">
+      <label for="email">Email (optional)</label>
+      <input type="email" id="email" placeholder="you@example.com" autocomplete="email">
+      <div class="hint">Leave this if you want to know when we've reviewed it. We won't use it for anything else.</div>
+    </div>
+
+    <button type="submit" id="submitBtn" disabled>
+      <span class="btn-label">Send request</span>
+      <div class="spinner"></div>
+    </button>
+  </form>
+
+  <div class="result" id="result"></div>
+
+  <p class="footnote">Banned words (slurs, offensive terms) aren't eligible and won't be reconsidered through this form.</p>
+</div>
+
+<script>
+  const WORD_LIST_URL = 'shift-word-list.json';
+  let VALID_SET = null;
+  let BANNED_SET = null;
+  let dataLoaded = false;
+
+  const wordInput = document.getElementById('word');
+  const reasonInput = document.getElementById('reason');
+  const emailInput = document.getElementById('email');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('wordStatus');
+  const statusText = document.getElementById('wordStatusText');
+  const form = document.getElementById('requestForm');
+  const resultEl = document.getElementById('result');
+  const loadErrorEl = document.getElementById('loadError');
+
+  fetch(WORD_LIST_URL)
+    .then(res => {
+      if (!res.ok) throw new Error('fetch failed');
+      return res.json();
+    })
+    .then(data => {
+      VALID_SET = new Set(data.validWords.map(w => w.toUpperCase()));
+      BANNED_SET = new Set(data.bannedWords.map(w => w.toUpperCase()));
+      dataLoaded = true;
+      updateState();
+    })
+    .catch(() => {
+      loadErrorEl.classList.add('show');
+    });
+
+  function isValidEmail(value) {
+    if (!value) return true;
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  }
+
+  function wordState(word) {
+    if (word.length < 4) return 'incomplete';
+    if (BANNED_SET.has(word)) return 'banned';
+    if (VALID_SET.has(word)) return 'dupe';
+    return 'eligible';
+  }
+
+  function updateState() {
+    const word = wordInput.value;
+    statusEl.classList.remove('show', 'eligible', 'dupe', 'banned');
+
+    let state = 'incomplete';
+    if (dataLoaded) {
+      state = wordState(word);
+      if (state === 'eligible') {
+        statusEl.classList.add('show', 'eligible');
+        statusText.textContent = 'Not on the list yet. Looks like it could be a fit.';
+      } else if (state === 'dupe') {
+        statusEl.classList.add('show', 'dupe');
+        statusText.textContent = 'Already on the official list. No need to send this one.';
+      } else if (state === 'banned') {
+        statusEl.classList.add('show', 'banned');
+        statusText.textContent = "This word isn't eligible for Shift.";
+      }
+    }
+
+    const reasonFilled = reasonInput.value.trim().length > 0;
+    const emailOk = isValidEmail(emailInput.value.trim());
+    submitBtn.disabled = !(dataLoaded && state === 'eligible' && reasonFilled && emailOk);
+  }
+
+  wordInput.addEventListener('input', () => {
+    const cleaned = wordInput.value.toUpperCase().replace(/[^A-Z]/g, '').slice(0, 4);
+    wordInput.value = cleaned;
+    updateState();
+  });
+  reasonInput.addEventListener('input', updateState);
+  emailInput.addEventListener('input', updateState);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (submitBtn.disabled) return;
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add('loading');
+
+    const word = wordInput.value;
+    const payload = {
+      _subject: `Shift word request: ${word}`,
+      _template: 'table',
+      _captcha: 'false',
+      _honey: '',
+      Word: word,
+      'Why it belongs': reasonInput.value.trim(),
+      'Reply email': emailInput.value.trim() || '(none given)',
+      Source: 'shiftwordpuzzle.com/request'
+    };
+
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/info@playsolarigames.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (!res.ok) throw new Error('submit failed');
+
+      form.style.display = 'none';
+      resultEl.classList.add('show');
+      resultEl.classList.remove('error');
+      resultEl.innerHTML = `
+        <h2>Request sent</h2>
+        <p>Thanks for helping make the list better. We review requests in batches, so it may be a while before you hear back.</p>
+      `;
+    } catch (err) {
+      resultEl.classList.add('show', 'error');
+      resultEl.innerHTML = `
+        <h2>Something went wrong</h2>
+        <p>Your request didn't go through. Email us directly instead: <a href="mailto:info@playsolarigames.com?subject=Shift word request: ${encodeURIComponent(word)}">info@playsolarigames.com</a></p>
+      `;
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('loading');
+    }
+  });
+</script>
+</body>
+</html>
