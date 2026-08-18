@@ -37,12 +37,9 @@ header{position:sticky;top:0;z-index:20;background:rgba(20,17,13,0.82);backdrop-
 .hero h1 .accent{color:var(--accent)}
 .hero p.lede{font-size:clamp(16px,2vw,19px);color:var(--dim);max-width:520px;margin:0 auto 34px;line-height:1.55;position:relative}
 
-.store-btn{display:inline-flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--border-strong);color:var(--primary);font-size:15px;font-weight:600;letter-spacing:0.01em;padding:14px 26px;border-radius:10px;cursor:pointer;text-decoration:none;position:relative;transition:border-color .18s ease, background .18s ease}
-.store-btn:hover{border-color:rgba(212,162,76,0.45);background:#1d1811}
-.store-btn svg{width:20px;height:20px;flex-shrink:0}
-.store-btn .label{text-align:left;line-height:1.25}
-.store-btn .label .small{display:block;font-size:10.5px;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;font-weight:600}
-.store-btn .label .big{display:block;font-size:15.5px;font-weight:700}
+.store-badge{display:inline-flex;transition:opacity .18s ease}
+.store-badge:hover{opacity:0.85}
+.store-badge img{height:48px;display:block}
 
 /* ---------- device frame ---------- */
 .phone-shell{position:relative;width:100%;border:1px solid rgba(234,226,208,0.14);border-radius:34px;overflow:hidden;box-shadow:0 24px 60px -20px rgba(0,0,0,0.55);flex-shrink:0;background:var(--bg)}
@@ -98,7 +95,7 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
   .hero{padding:64px 20px 24px}
   .hero-phones{margin-top:44px}
   .header-cta{font-size:11px;padding:7px 12px}
-  .store-btn{padding:12px 20px}
+  .store-badge img{height:40px}
 }
 </style>
 </head>
@@ -119,9 +116,8 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
     <h1>Change one letter. Reach your <span class="accent">destination</span>.</h1>
     <p class="lede">Shift is a daily word puzzle. Travel from a departure word to your destination, one letter at a time.</p>
     <div>
-      <a class="store-btn" href="https://apps.apple.com/us/app/shift-daily-word-puzzle/id6765829888" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12.3c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.7-1.8-3.3-1.8-1.4-.1-2.7.8-3.4.8-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.2 0 2-1.1 2.8-2.2.7-1 1-2 1-2.1-.1 0-2.4-.9-2.4-3.3zm-2.3-8.4c.6-.8 1-1.8.9-2.9-.9.1-2 .6-2.6 1.4-.6.7-1.1 1.8-1 2.8 1 .1 2.1-.5 2.7-1.3z"></path></svg>
-        <span class="label"><span class="small">Download on the</span><span class="big">App Store</span></span>
+      <a class="store-badge" href="https://apps.apple.com/us/app/shift-daily-word-puzzle/id6765829888" target="_blank" rel="noopener">
+        <img src="images/app-store-badge.svg" alt="Download on the App Store">
       </a>
     </div>
     <div class="hero-phones">
@@ -164,9 +160,8 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
     <div class="final-icon"><img src="images/app-icon-1024.png" alt="Shift app icon"></div>
     <h2>Ready for takeoff.</h2>
     <p>Shift is available now on the App Store.</p>
-    <a class="store-btn" href="https://apps.apple.com/us/app/shift-daily-word-puzzle/id6765829888" target="_blank" rel="noopener" style="margin:0 auto">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12.3c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.7-1.8-3.3-1.8-1.4-.1-2.7.8-3.4.8-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.2 0 2-1.1 2.8-2.2.7-1 1-2 1-2.1-.1 0-2.4-.9-2.4-3.3zm-2.3-8.4c.6-.8 1-1.8.9-2.9-.9.1-2 .6-2.6 1.4-.6.7-1.1 1.8-1 2.8 1 .1 2.1-.5 2.7-1.3z"></path></svg>
-      <span class="label"><span class="small">Download on the</span><span class="big">App Store</span></span>
+    <a class="store-badge" href="https://apps.apple.com/us/app/shift-daily-word-puzzle/id6765829888" target="_blank" rel="noopener" style="margin:0 auto">
+      <img src="images/app-store-badge.svg" alt="Download on the App Store">
     </a>
   </div>
 </section>
