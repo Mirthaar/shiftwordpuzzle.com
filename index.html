@@ -24,7 +24,8 @@ header{position:sticky;top:0;z-index:20;background:rgba(20,17,13,0.82);backdrop-
 .header-inner{display:flex;align-items:center;justify-content:space-between;padding:18px 24px}
 .wordmark{font-size:22px;font-weight:800;letter-spacing:-0.02em;color:var(--primary)}
 .wordmark .dot{color:var(--accent)}
-.header-cta{font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--dim);border:1px solid var(--border-strong);padding:9px 16px;border-radius:999px;white-space:nowrap}
+.header-cta{font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(212,162,76,0.45);padding:9px 16px;border-radius:999px;white-space:nowrap;text-decoration:none;transition:background .18s ease}
+.header-cta:hover{background:rgba(212,162,76,0.10)}
 
 /* ---------- hero ---------- */
 .hero{position:relative;padding:88px 24px 40px;text-align:center;overflow:hidden}
@@ -36,7 +37,7 @@ header{position:sticky;top:0;z-index:20;background:rgba(20,17,13,0.82);backdrop-
 .hero h1 .accent{color:var(--accent)}
 .hero p.lede{font-size:clamp(16px,2vw,19px);color:var(--dim);max-width:520px;margin:0 auto 34px;line-height:1.55;position:relative}
 
-.store-btn{display:inline-flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--border-strong);color:var(--primary);font-size:15px;font-weight:600;letter-spacing:0.01em;padding:14px 26px;border-radius:10px;cursor:default;user-select:none;position:relative;transition:border-color .18s ease, background .18s ease}
+.store-btn{display:inline-flex;align-items:center;gap:10px;background:var(--panel);border:1px solid var(--border-strong);color:var(--primary);font-size:15px;font-weight:600;letter-spacing:0.01em;padding:14px 26px;border-radius:10px;cursor:pointer;text-decoration:none;position:relative;transition:border-color .18s ease, background .18s ease}
 .store-btn:hover{border-color:rgba(212,162,76,0.45);background:#1d1811}
 .store-btn svg{width:20px;height:20px;flex-shrink:0}
 .store-btn .label{text-align:left;line-height:1.25}
@@ -96,7 +97,7 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
 @media (max-width:560px){
   .hero{padding:64px 20px 24px}
   .hero-phones{margin-top:44px}
-  .header-cta{display:none}
+  .header-cta{font-size:11px;padding:7px 12px}
   .store-btn{padding:12px 20px}
 }
 </style>
@@ -107,7 +108,7 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
 <header>
   <div class="header-inner">
     <div class="wordmark">shift<span class="dot">.</span></div>
-    <div class="header-cta">Coming Soon</div>
+    <a class="header-cta" href="https://apps.apple.com/us/app/shift-daily-word-puzzle/id6765829888" target="_blank" rel="noopener">Download Now</a>
   </div>
 </header>
 
@@ -118,10 +119,10 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
     <h1>Change one letter. Reach your <span class="accent">destination</span>.</h1>
     <p class="lede">Shift is a daily word puzzle. Travel from a departure word to your destination, one letter at a time.</p>
     <div>
-      <div class="store-btn" aria-disabled="true">
+      <a class="store-btn" href="https://apps.apple.com/us/app/shift-daily-word-puzzle/id6765829888" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12.3c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.7-1.8-3.3-1.8-1.4-.1-2.7.8-3.4.8-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.2 0 2-1.1 2.8-2.2.7-1 1-2 1-2.1-.1 0-2.4-.9-2.4-3.3zm-2.3-8.4c.6-.8 1-1.8.9-2.9-.9.1-2 .6-2.6 1.4-.6.7-1.1 1.8-1 2.8 1 .1 2.1-.5 2.7-1.3z"></path></svg>
-        <span class="label"><span class="small">Coming soon to the</span><span class="big">Apple App Store</span></span>
-      </div>
+        <span class="label"><span class="small">Download on the</span><span class="big">App Store</span></span>
+      </a>
     </div>
     <div class="hero-phones">
       <div class="phone-wrap"><div class="phone-shell"><img src="images/real-board.png" alt="Shift letter ladder board"></div></div>
@@ -162,11 +163,11 @@ footer{border-top:1px solid var(--border);padding:32px 24px;text-align:center}
   <div class="wrap">
     <div class="final-icon"><img src="images/app-icon-1024.png" alt="Shift app icon"></div>
     <h2>Ready for takeoff.</h2>
-    <p>Shift is landing soon on the App Store.</p>
-    <div class="store-btn" aria-disabled="true" style="margin:0 auto">
+    <p>Shift is available now on the App Store.</p>
+    <a class="store-btn" href="https://apps.apple.com/us/app/shift-daily-word-puzzle/id6765829888" target="_blank" rel="noopener" style="margin:0 auto">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 12.3c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.7-1.8-3.3-1.8-1.4-.1-2.7.8-3.4.8-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.2 0 2-1.1 2.8-2.2.7-1 1-2 1-2.1-.1 0-2.4-.9-2.4-3.3zm-2.3-8.4c.6-.8 1-1.8.9-2.9-.9.1-2 .6-2.6 1.4-.6.7-1.1 1.8-1 2.8 1 .1 2.1-.5 2.7-1.3z"></path></svg>
-      <span class="label"><span class="small">Coming soon to the</span><span class="big">Apple App Store</span></span>
-    </div>
+      <span class="label"><span class="small">Download on the</span><span class="big">App Store</span></span>
+    </a>
   </div>
 </section>
 
